@@ -23,6 +23,7 @@ public class baitoandonuocForm {
 	private JTextField textFieldBT1;
 	private JTextField textFieldBT2;
 	private JTextField textFieldWaterNeed;
+	private JScrollPane scrollPane;
 	private JTable table;
 	private JButton btnKQ;
 	private String[] columnNames={"Binh 1","Binh 2","Ap dung luat"};
@@ -66,6 +67,16 @@ public class baitoandonuocForm {
 				}
 				else {
 				btdn.tinhKQ();
+				frame.remove(table);
+				frame.remove(scrollPane);
+				table = new JTable(btdn.data,columnNames);
+				table.setFont(new Font("Tahoma", Font.PLAIN, 14));
+				table.setBounds(0, 0, 1, 1);
+				frame.getContentPane().add(table);
+				
+				scrollPane = new JScrollPane(table);
+				scrollPane.setBounds(472, 45, 422, 336);
+				frame.getContentPane().add(scrollPane);
 				}
 			}
 		});
@@ -130,7 +141,7 @@ public class baitoandonuocForm {
 		table.setBounds(0, 0, 1, 1);
 		frame.getContentPane().add(table);
 		
-		JScrollPane scrollPane = new JScrollPane(table);
+		scrollPane = new JScrollPane(table);
 		scrollPane.setBounds(472, 45, 422, 336);
 		frame.getContentPane().add(scrollPane);
 		

@@ -9,6 +9,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JMenuBar;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JComboBox;
 import javax.imageio.ImageIO;
@@ -31,6 +33,56 @@ public class tictactoeForm {
 	private static JButton btnRefresh;
 	private static JComboBox comboBoxTurn;
 	private static tictactoe ttt=new tictactoe();
+	
+	int bitD=1;
+	
+	public void RefreshGame() {
+		btn0_0.setIcon(null);
+		btn0_1.setIcon(null);
+		btn0_2.setIcon(null);
+		btn1_0.setIcon(null);
+		btn1_1.setIcon(null);
+		btn1_2.setIcon(null);
+		btn2_0.setIcon(null);
+		btn2_1.setIcon(null);
+		btn2_2.setIcon(null);
+		for(int i=0;i<3;i++) {
+			for(int j=0;j<3;j++) {
+				ttt.matrix[i][j]=0;
+			}
+		}
+		if(ttt.turnPlay==2&&bitD==1) {
+			viTri vt=ttt.danh(2);
+			if(vt.x==0&&vt.y==0) {
+				btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==0&&vt.y==1) {
+				btn0_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==0&&vt.y==2) {
+				btn0_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==1&&vt.y==0) {
+				btn1_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==1&&vt.y==1) {
+				btn1_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==1&&vt.y==2) {
+				btn1_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==2&&vt.y==0) {
+				btn2_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==2&&vt.y==1) {
+				btn2_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+			else if(vt.x==2&&vt.y==2) {
+				btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+			}
+		}
+		bitD=1;
+	}
 
 	/**
 	 * Launch the application.
@@ -48,6 +100,8 @@ public class tictactoeForm {
 			}
 		});
 	}
+	
+
 
 	/**
 	 * Create the application.
@@ -61,11 +115,15 @@ public class tictactoeForm {
 				 	JComboBox comboBox = (JComboBox) e.getSource();
 	                Object selected = comboBox.getSelectedItem();
 	                if(selected.toString().equals("Turn1")) {
-	                ttt.turnPlay=1;
+	                	RefreshGame();
+	                	ttt.turnPlay=1;
 	                }
 	                else if(selected.toString().equals("Turn2")) {
+	                	RefreshGame();
 	                	ttt.turnPlay=2;
 	    				if(ttt.turnPlay==2) {
+	    					bitD=2;
+	    					RefreshGame();
 	    					viTri vt=ttt.danh(2);
 	    					if(vt.x==0&&vt.y==0) {
 	    						btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -95,6 +153,7 @@ public class tictactoeForm {
 	    						btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 	    					}
 	    				}
+	    				System.out.println("========================="+bitD+"=========================================");
 	                }
 	                
 	                
@@ -111,7 +170,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[0][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
@@ -140,11 +209,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[0][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -172,6 +263,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -189,7 +292,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn0_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[0][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
@@ -218,11 +331,34 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
+						
 					}
 					else {
 						btn0_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[0][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -250,6 +386,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -266,7 +414,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn0_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[0][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
@@ -295,11 +453,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn0_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[0][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -327,6 +507,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -344,7 +536,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn1_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[1][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
@@ -373,11 +575,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn1_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[1][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -405,6 +629,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -422,7 +658,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn1_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[1][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
@@ -451,11 +697,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn1_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[1][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
 							btn0_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
@@ -483,6 +751,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -499,7 +779,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn1_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[1][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -529,11 +819,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn1_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[1][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -562,6 +874,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -579,7 +903,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn2_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[2][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -609,11 +943,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn2_0.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[2][0]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -642,6 +998,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -659,7 +1027,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn2_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[2][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -689,11 +1067,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn2_1.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[2][1]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.OK_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -722,6 +1122,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.CANCEL_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
@@ -739,7 +1151,17 @@ public class tictactoeForm {
 					if(ttt.turnPlay==1) {
 						btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
 						ttt.matrix[2][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.CANCEL_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -769,11 +1191,33 @@ public class tictactoeForm {
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.CANCEL_OPTION){
+					               RefreshGame();
+					            }
+						}
+						}
 					}
 					else {
 						btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\O.png"));
 						ttt.matrix[2][2]=2;
-						
+						String ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.CANCEL_OPTION){
+					               RefreshGame();
+					            }
+						} else {
 						
 						viTri vt=ttt.danh(2);
 						if(vt.x==0&&vt.y==0) {
@@ -802,6 +1246,18 @@ public class tictactoeForm {
 						}
 						else if(vt.x==2&&vt.y==2) {
 							btn2_2.setIcon(new ImageIcon("C:\\Users\\trung\\Desktop\\eclipse-jee-oxygen-3a-win32-x86_64\\projects\\TriTueNhanTao\\image\\X.png"));
+						}
+						ktra=ttt.ktraKQ(2);
+						if(ktra!="Dont No") {
+							int output = JOptionPane.showConfirmDialog(frmTicTacToe
+						               , ktra
+						               ,"KET QUA"
+						               ,JOptionPane.CLOSED_OPTION,
+						               JOptionPane.INFORMATION_MESSAGE);
+							if(output == JOptionPane.CANCEL_OPTION){
+					               RefreshGame();
+					            }
+						}
 						}
 						
 					}
